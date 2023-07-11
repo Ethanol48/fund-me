@@ -2,11 +2,55 @@
 
 pragma solidity 0.8.19;
 
-// Fund
-// Withdram
+import {Script, console} from "../lib/forge-std/src/Script.sol";
+import {FundMe} from "src/FundMe.sol";
 
-import {Script, console} from "forge-std/Script.sol";
+contract FundFundMe is Script {
+    uint constant SEND_VALUE = 1 ether;
+    address fundMeAddress;
 
-contract WithdrawFunds is Script {
-    function run() external {}
+    /// @notice funds FundMe contract passed in constructor
+    /// @dev funds SEND_VALUE (1 ether) to FundMe
+    function fundFundMe() public {
+        vm.startBroadcast();
+        FundMe(payable(fundMeAddress)).fund{value: SEND_VALUE}();
+        console.log("Funded FundMe with ", SEND_VALUE);
+
+        vm.stopBroadcast();
+    }
+
+    function fundFundMeWithoutBroadcast() public payable {
+        FundMe(payable(fundMeAddress)).fund{value: SEND_VALUE}();
+        console.log("Funded FundMe with ", SEND_VALUE);
+    }
+
+    constructor(address _fundMeAddress) {
+        fundMeAddress = _fundMeAddress;
+    }
+
+    function run() external {
+        vm.startBroadcast();
+        fundFundMe();
+        vm.stopBroadcast();
+    }
+}
+
+contract WithdrawFundMe is Script {
+    address fundMeAddress;
+
+    function withdrawFundMe() public {
+        vm.startBroadcast();
+        FundMe(payable(fundMeAddress)).withdraw();
+        vm.stopBroadcast();
+    }
+
+    constructor(address _fundMeAddress) {
+        fundMeAddress = _fundMeAddress;
+    }
+
+    function run() external {
+        vm.startBroadcast();
+        withdrawFundMe();
+        vm.stopBroadcast();
+    }
 }
