@@ -26,7 +26,9 @@ contract FundMe {
     mapping(address => uint256) private s_addressToAmountFunded;
     AggregatorV3Interface private s_priceFeed;
 
-    // Events (we have none!)
+    // Events
+    event Funded(address indexed funder, uint amount);
+
     // Modifiers
     modifier onlyOwner() {
         // require(msg.sender == i_owner);
@@ -58,6 +60,7 @@ contract FundMe {
         // require(PriceConverter.getConversionRate(msg.value) >= MINIMUM_USD, "You need to spend more ETH!");
         s_addressToAmountFunded[msg.sender] += msg.value;
         s_funders.push(msg.sender);
+        emit Funded(msg.sender, msg.value);
     }
 
     function withdraw() public onlyOwner {

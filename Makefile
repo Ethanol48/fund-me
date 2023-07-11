@@ -22,22 +22,6 @@ deploy-local:
 	forge script script/DeployFundMe.s.sol:DeployFundMe --broadcast -vv
 
 
-deploy-mumbai:
-	@echo "############################"
-	@echo "## Deploying to Mumbai... ##"
-	@echo "############################"
-
-	forge script script/DeployFundMe.s.sol:DeployFundMe --rpc-url $(MUMBAI_RPC_URL) --private-key $(PRIVATE_KEY) --broadcast --verify $(ETHERSCAN_API_KEY) -vv
-
-
-deploy-mainnet:
-	@echo "#############################"
-	@echo "## Deploying to mainnet... ##"
-	@echo "#############################"
-
-	forge script script/DeployFundMe.s.sol:DeployFundMe --rpc-url $(MAINNET_RPC_URL) --private-key $(PRIVATE_KEY) --broadcast --verify $(ETHERSCAN_API_KEY) -vv
-
-
 deploy-sepolia:
 	@echo "#############################"
 	@echo "## Deploying to sepolia... ##"
