@@ -3,7 +3,7 @@
 pragma solidity 0.8.19;
 
 import {Script, console} from "../lib/forge-std/src/Script.sol";
-import {FundMe} from "src/FundMe.sol";
+import {FundMe} from "../src/FundMe.sol";
 
 contract FundFundMe is Script {
     uint constant SEND_VALUE = 1 ether;

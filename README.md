@@ -17,8 +17,6 @@ For running this project you would need:
 - A .env File to save the variables with these names:
   `PRIVATE_KEY` and `RPC_URL`
 
-  - (Optional) A tool for loading the variables like [direnv](https://direnv.net/) to organize your environment variables
-
 ## Installing
 
 To install this repo:
@@ -28,6 +26,34 @@ git clone https://github.com/Ethanol48/Foundry
 ```
 
 <br></br>
+
+### _Disclaimer_
+
+---
+
+_For all the following commands asumes that the variables `PRIVATE_KEY` and `RPC_URL` were set, if not you will need to set them in every command when needed, per example:_
+
+```
+make test-chain PRIVATE_KEY=value RPC_URL=value
+```
+
+_or if the `PRIVATE_KEY` is set:_
+
+```
+make test-chain RPC_URL=value
+```
+
+---
+
+<br></br>
+
+### Load enviroment variables
+
+```
+# load environment variables
+# with PRIVATE_KEY inside
+sh .env
+```
 
 And If you installed foundry correctly you will be able to run the following commands:
 
@@ -43,21 +69,23 @@ make build
 make test
 ```
 
+For simulating in different chains:
+
+```
+make test-chain
+```
+
 <rb></br>
 
 ### Deploying
 
-For deploying we have a script in script/HelperConfig.s.sol that helps us with the configurations, this project depends on a pricefeed, so I develop a 'mock' contract for local environment. Still, if we wanted to deploy to testnets we could add a real chainlink pricefeed, if we wanted to deploy per example, to mumbai, we will need to modify HelperConfig constructor to add the mumbai chainId and create a simple function that retuns the address of said pricefeed.
+For deploying we have a script in script/HelperConfig.s.sol that helps us with the configurations, this project depends on a pricefeed, so I develop a 'mock' contract for local environment.
+
+Still, if we wanted to deploy to testnets we could add a real chainlink pricefeed, if we wanted to deploy per example, to mumbai, we will need to modify HelperConfig constructor to add the mumbai chainId and create a simple function that retuns the address of said pricefeed.
 
 <br>
 
-This architecture help us to only worry about the rpc-url endpoint and private key.
-
 ```
-# load environment variables
-sh .env
-
-
 # available networks:  sepolia or local.
 
 make deploy-<network>
@@ -65,7 +93,11 @@ make deploy-<network>
 
 # If the network that you want to deploy isn't listed
 
-forge script script/DeployFundMe.s.sol --private-key $PRIVATE_KEY --rpc-url $RPC_URL
+make deploy-chain rpc-url=<rpc-endpoint>
+
+(or if you have already set the RPC_URL variable)
+
+make deploy-chain
 ```
+
 <br>
-When using `forge script` if the parameter for `rpc-url` is not given, forge will automatically create a temporary instance of anvil.
